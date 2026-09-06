@@ -1,0 +1,86 @@
+{
+  "code": "birkelandeydemini",
+  "class": "BlockBirkelandEydeMini",
+  "entityClass": "BlockEntityBirkelandEydeMini",
+  "entityBehaviors": [
+    { "name": "BEBehaviorBirkelandEydeMini" },
+    { "name": "ElectricalProgressive" }
+  ],
+  "attributes": {
+    "blockEProperties": "main",
+    "maxConsumption": 8,
+    "voltage": 32,
+    "maxCurrent": 20.0,
+    "isolated": true,
+    "isolatedEnvironment": true,
+    "handbook": {
+      "groupBy": [ "birkelandeydemini-*" ]
+    },
+  },
+  "variantGroups": [
+  {
+    "code": "side",
+    "states": [ "north", "east", "south", "west" ]
+  }
+],
+"behaviors": [
+  {
+    "name": "Multiblock",
+    "propertiesByType": {
+      "*-north": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 0 } },
+      "*-east":  { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 1, "y": 0, "z": 0 } },
+      "*-south": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 1 } },
+      "*-west":  { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 0, "y": 0, "z": 0 } }
+    }
+  }
+],
+  "creativeInventory": {
+  "general": [ "*-north" ],
+  "electricity": [ "*-north" ]
+},
+  "shape": {
+    "base": "mini_birklandeyde"
+  },
+  "textures": {
+    "copper-coils": { "base": "game:block/metal/anvil/tinbronze" },
+    "orange": { "base": "game:block/clay/hardened/orange" },
+    "quartz": { "base": "game:block/glass/quartz" },
+    "copper": { "base": "game:block/metal/plate/copper" },
+    "iron": { "base": "game:block/metal/plate/iron" },
+    "oak-inside": { "base": "game:block/wood/crate/oak-inside" }
+  },
+  "resistance": 1,
+  "drawType": "JSON",
+  "lightAbsorption": 0.0,
+  "faceCullMode": "NeverCull",
+  "renderPass": "OpaqueNoCull",
+  "emitSideAo": { "all": false },
+  "sideAo": { "all": true },
+  "sideOpaque": { "all": false },
+  "sideSolid": { "all": false },
+  "sounds": {
+    "place": "game:block/anvil",
+    "walk": "game:walk/stone"
+  },
+  "guiTransform": {
+    "translation": { "x": 0, "y": 3, "z": 0 },
+    "rotation": { "x": -51, "y": -63, "z": 0 },
+    "origin": { "x": 0.5, "y": 0.0, "z": 0.5 }
+  },
+  "groundTransform": {
+    "translation": { "x": 0, "y": 0, "z": 0 },
+    "rotation": { "x": 0, "y": 0, "z": 0 },
+    "origin": { "x": 0, "y": 0.0, "z": 0.5 },
+    "scale": 2.0
+  },
+  "collisionBox": { "x1": 0.0, "y1": 0.0, "z1": 0.25, "x2": 1.0, "y2": 1.0, "z2": 0.75 },
+  "selectionBox": { "x1": 0.0, "y1": 0.0, "z1": 0.25, "x2": 1.0, "y2": 1.0, "z2": 0.75 },
+  "heldTpIdleAnimation": "holdbothhandslarge",
+  "heldRightReadyAnimation": "heldblockready",
+  "heldTpUseAnimation": "twohandplaceblock",
+  "tpHandTransform": {
+    "translation": { "x": -1.43, "y": -0.91, "z": -0.7 },
+    "rotation": { "x": -2, "y": 25, "z": -78 },
+    "scale": 0.4
+  }
+}

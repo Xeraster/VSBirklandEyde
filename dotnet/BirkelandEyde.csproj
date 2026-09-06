@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="VintagestoryAPI">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/VintagestoryAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VintagestoryLib">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/VintagestoryLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VSEssentials">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/VSEssentials.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VSSurvival">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/VSSurvivalMod.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Lib/0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Lib/Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="ElectricalProgressive-Core">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/electricalprogressivecore_3.3.0/ElectricalProgressive-Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="ElectricalProgressive-Basics">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/electricalprogressivebasics_3.3.1/ElectricalProgressive-Basics.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <Reference Include="ElectricalProgressive-QOL">
+      <HintPath>/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/electricalprogressiveqol_3.3.1/ElectricalProgressive-QOL.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
