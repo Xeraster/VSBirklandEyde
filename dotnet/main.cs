@@ -113,11 +113,42 @@ class BlockBirkelandEydeMini : BlockEBase
         }
     }
 
-    public override Cuboidf[] GetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos) =>
+    /*public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
+    {
+        if (blockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { ModelFacing: not Facing.None, ModelFacing: var facing })
+        {
+            bool isEastWest = facing == FacingHelper.From(BlockFacing.UP, BlockFacing.EAST)
+                            || facing == FacingHelper.From(BlockFacing.UP, BlockFacing.WEST);
+
+            api.Logger.Notification("isEastWest=" + isEastWest.ToString());
+
+            if (isEastWest)
+            {
+                // swap X/Z on each box
+                Cuboidf[] fuck = base.GetSelectionBoxes(blockAccessor, pos);
+                int i = 0;
+                api.Logger.Notification("cuboid size=" + fuck.Length.ToString());
+                foreach (Cuboidf c in fuck.ToArray())
+                {
+                    fuck[i].X1 = c.Z1;
+                    fuck[i].X2 = c.Z2;
+
+                    fuck[i].Z1 = c.X1;
+                    fuck[i].Z2 = c.X2;
+                    i++;
+                }
+                return fuck;//only interfere with the selection box calculation process if the face is east or west
+            }
+        }
+
+        return base.GetSelectionBoxes(blockAccessor, pos);
+    }*/
+
+    /*public override Cuboidf[] GetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos) =>
         GetRotatedBoxes(pos, CollisionBoxesCache, CollisionBoxes);
 
     public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos) =>
-        GetRotatedBoxes(pos, SelectionBoxesCache, SelectionBoxes);
+        GetRotatedBoxes(pos, SelectionBoxesCache, SelectionBoxes);*/
 
     private Cuboidf[] GetRotatedBoxes_old(BlockPos pos, Dictionary<(Facing, string), Cuboidf[]> cache, Cuboidf[] sourceBoxes)
     {
@@ -159,16 +190,8 @@ class BlockBirkelandEydeMini : BlockEBase
     private static readonly Vec3d RotationOriginVec3d = new Vec3d(0.5, 0.5, 0.5);
 
     //yeah
-    public override void OnJsonTesselation(ref MeshData sourceMesh, ref int[] lightRgbsByCorner, BlockPos pos, Block[] chunkExtBlocks, int extIndex3d)
+    /*public override void OnJsonTesselation(ref MeshData sourceMesh, ref int[] lightRgbsByCorner, BlockPos pos, Block[] chunkExtBlocks, int extIndex3d)
     {
-        /*base.OnJsonTesselation(ref sourceMesh, ref lightRgbsByCorner, pos, chunkExtBlocks, extIndex3d);
-        if (api is ICoreClientAPI && api.World.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { Facing: not Facing.None, Facing: var facing })
-        {
-            MeshData rotated = sourceMesh.Clone();
-            rotated.Rotate(RotationOriginVec3f, 0f, 0f, (float)Math.PI); // cancel the framework's built-in Up* 180° flip
-            FacingRotations.ApplyRotations(rotated, facing);
-            sourceMesh = rotated;
-        }*/
         //the new updated version that is less shit
         base.OnJsonTesselation(ref sourceMesh, ref lightRgbsByCorner, pos, chunkExtBlocks, extIndex3d);
         if (api is ICoreClientAPI && api.World.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { ModelFacing: not Facing.None, ModelFacing: var facing })
@@ -178,11 +201,17 @@ class BlockBirkelandEydeMini : BlockEBase
             FacingRotations.ApplyRotations(rotated, facing);
             sourceMesh = rotated;
         }
-    }
+    }*/
+
+    /*public override Cuboidf[] GetSelectionBoxes(IBlockAccessor blockAccessor, BlockPos pos)
+    {
+        if (blockAccessor.)
+    }*/
 
     public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSelection, ItemStack byItemStack)
     {
-        Selection selection = new Selection(blockSelection);
+        //THE CLOSEST KNOWN WORKING BLOCK AS OF 09/06/26. The only unsolvable bug this code has is losing connection with the electrical network on chunk reload
+        /*Selection selection = new Selection(blockSelection);
         BlockFacing playerFacing = BlockFacing.HorizontalFromAngle(byPlayer.Entity.Pos.Yaw);
         Facing electricalFacing = FacingHelper.From(selection.Face, playerFacing);
         Facing modelFacing = FacingHelper.From(BlockFacing.UP, playerFacing.GetCCW());
@@ -199,10 +228,36 @@ class BlockBirkelandEydeMini : BlockEBase
                 $"sizeY={mb?.GetType().GetField("SizeY", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mb)} " +
                 $"sizeZ={mb?.GetType().GetField("SizeZ", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mb)} " +
                 $"cposition={mb?.ControllerPositionRel}");
-            entity.ScheduleNetworkRefresh(2000);
+            //entity.ScheduleNetworkRefresh(2000);
             return true;
         }
-        return false;
+        return false;*/
+
+
+        //THIS DOESNT FUCKING WORK BCAUSE IT DOESNT TAKE INTO ACCOUNT PLACEMENT ROTATION AND BREAKS THE FUCKING COLLIDERS
+        var selection = new Selection(blockSelection);
+        var facing = FacingHelper.From(selection.Face, selection.Direction);
+
+        if (!base.DoPlaceBlock(world, byPlayer, blockSelection, byItemStack) || world.BlockAccessor.GetBlockEntity(blockSelection.Position) is not BlockEntityBirkelandEydeMini entity)
+        {
+            return false;
+        }
+
+        entity.Facing = facing;
+        entity.ModelFacing = facing;
+        LoadEProperties.Load(this, entity, selection.Face.Index);
+
+        var mb = GetBehavior<Vintagestory.GameContent.BlockBehaviorMultiblock>();
+            api.Logger.Notification($"[BirklandEyde] placed {Code} side={Variant["side"]} " +
+                $"sizeX={mb?.GetType().GetField("SizeX", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mb)} " +
+                $"sizeY={mb?.GetType().GetField("SizeY", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mb)} " +
+                $"sizeZ={mb?.GetType().GetField("SizeZ", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(mb)} " +
+                $"cposition={mb?.ControllerPositionRel}");
+                
+        return true;
+
+
+
         /*BlockFacing playerFacing = BlockFacing.HorizontalFromAngle(byPlayer.Entity.Pos.Yaw);
         BlockFacing adjustedFacing = playerFacing.GetCCW(); // try GetCW() instead if this goes the wrong way
         Facing facing = FacingHelper.From(BlockFacing.UP, adjustedFacing);
@@ -344,7 +399,7 @@ class BlockBirkelandEydeMini : BlockEBase
 
     public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
     {
-        BlockFacing playerFacing = BlockFacing.HorizontalFromAngle(byPlayer.Entity.Pos.Yaw);
+        /*BlockFacing playerFacing = BlockFacing.HorizontalFromAngle(byPlayer.Entity.Pos.Yaw);
         string desiredSide = playerFacing.Code;
 
         if (Variant["side"] != desiredSide)
@@ -358,8 +413,10 @@ class BlockBirkelandEydeMini : BlockEBase
         }
 
 
-        return base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
+        return base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);*/
+        return MyMiniLib.CheckSolidFace(world.BlockAccessor, blockSel.Position, Facing.DownAll) && base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
     }
+    
 
     public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
     {
@@ -438,7 +495,7 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
 
         //if (api.Side == EnumAppSide.Server)//doesnt prevent the listener from getting registered on the client and it never gets called from the server side. should be renamed to RegisterGameTickListenerClientOnly
         //{
-        listenerId2 = RegisterDelayedCallback(OnDelayedNetworkRefresh, 1000);
+        //listenerId2 = RegisterDelayedCallback(OnDelayedNetworkRefresh, 1000);
         listenerId = RegisterGameTickListener(OnGameTick, 1500);
         //}
         Api.World.BlockAccessor.RemoveBlockLight(BirkelandEydeModSystem.lighthsv, Pos);//make the light go away if there is a light
@@ -1132,6 +1189,7 @@ public class BEBehaviorBirkelandEydeMini : BlockEntityBehavior, IElectricConsume
     public static Vec3d GetRotatedOffset(BlockEntityBirkelandEydeMini be, Vec3d northFacingOffset)
     {
         Facing facing = be.ModelFacing;
+        Console.WriteLine("[BirkelandEyde] be.Facing= " + be.ModelFacing.ToString());
         if (facing == Facing.None) return northFacingOffset;
 
         Vec3d rotationOrigin = new Vec3d(0.5, 0.5, 0.5); // pivot = block center, matches box/mesh rotation elsewhere
@@ -1141,7 +1199,7 @@ public class BEBehaviorBirkelandEydeMini : BlockEntityBehavior, IElectricConsume
             (float)northFacingOffset.X, (float)northFacingOffset.Y, (float)northFacingOffset.Z
         );
 
-        Cuboidf[] boxes = { point.RotatedCopy(0f, 90f, 180f, rotationOrigin) };
+        Cuboidf[] boxes = { point.RotatedCopy(0f, 270f, 0f, rotationOrigin) };
         FacingRotations.ApplyRotations(boxes, facing);
 
         return new Vec3d(boxes[0].X1, boxes[0].Y1, boxes[0].Z1);
@@ -1157,6 +1215,7 @@ public class BEBehaviorBirkelandEydeMini : BlockEntityBehavior, IElectricConsume
             {
                 Vec3d offset = GetRotatedOffset(be, new Vec3d(0.5, 0.2, 1));
                 Vec3d pos = be.Pos.ToVec3d().Add(offset); // now actually uses the rotated value
+                //Vec3d pos = be.Pos.ToVec3d().Add(0.5, 0.2, 1);
                 BirkelandEyde.Utils.ParticleManager.SpawnElectricSparksAsync(manager, pos, new Vec3d(0.1, 0.0, 0.1));
             }
         }

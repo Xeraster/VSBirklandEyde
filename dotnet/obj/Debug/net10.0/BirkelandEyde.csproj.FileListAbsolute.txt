@@ -10,3 +10,16 @@
 /mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/obj/Debug/net10.0/refint/BirkelandEyde.dll
 /mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/obj/Debug/net10.0/BirkelandEyde.pdb
 /mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/obj/Debug/net10.0/ref/BirkelandEyde.dll
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/bin/Debug/net10.0/BirkelandEyde.deps.json
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/bin/Debug/net10.0/BirkelandEyde.dll
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/bin/Debug/net10.0/BirkelandEyde.pdb
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.csproj.AssemblyReference.cache
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.AssemblyInfoInputs.cache
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.AssemblyInfo.cs
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.csproj.CoreCompileInputs.cache
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.sourcelink.json
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.dll
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/refint/BirkelandEyde.dll
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/BirkelandEyde.pdb
+/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/Debug/net10.0/ref/BirkelandEyde.dll

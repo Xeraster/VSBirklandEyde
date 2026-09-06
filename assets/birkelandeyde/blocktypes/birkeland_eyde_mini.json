@@ -23,14 +23,32 @@
     "states": [ "north", "east", "south", "west" ]
   }
 ],
+"shapebytype": {
+    "*-north": {
+      "base": "mini_birklandeyde",
+      "rotateY": 180
+    },
+    "*-east": {
+      "base": "mini_birklandeyde",
+      "rotateY": 90
+    },
+    "*-south": {
+      "base": "mini_birklandeyde",
+      "rotateY": 0
+    },
+    "*-west": {
+      "base": "mini_birklandeyde",
+      "rotateY": 270
+    }
+  },
 "behaviors": [
-  {
-    "name": "Multiblock",
+  { "name": "HorizontalOrientable" },
+    {"name": "Multiblock",
     "propertiesByType": {
-      "*-north": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 0 } },
-      "*-east":  { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 1, "y": 0, "z": 0 } },
-      "*-south": { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 1 } },
-      "*-west":  { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 0, "y": 0, "z": 0 } }
+      "*-north": { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 0, "y": 0, "z": 0 } },
+"*-east":  { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 0 } },
+"*-south": { "sizex": 2, "sizey": 1, "sizez": 1, "cposition": { "x": 1, "y": 0, "z": 0 } },
+"*-west":  { "sizex": 1, "sizey": 1, "sizez": 2, "cposition": { "x": 0, "y": 0, "z": 1 } }
     }
   }
 ],
@@ -74,7 +92,13 @@
     "scale": 2.0
   },
   "collisionBox": { "x1": 0.0, "y1": 0.0, "z1": 0.25, "x2": 1.0, "y2": 1.0, "z2": 0.75 },
-  "selectionBox": { "x1": 0.0, "y1": 0.0, "z1": 0.25, "x2": 1.0, "y2": 1.0, "z2": 0.75 },
+  "selectionBox": { "x1": 0.0, "y1": 0.0, "z1": 0.25, "x2": 1.0, "y2": 1.0, "z2": 0.75,
+  "rotateYByType": {
+  	"*-east": 270,
+  	"*-west": 90,
+  	"*-south": 0
+  	}
+   },
   "heldTpIdleAnimation": "holdbothhandslarge",
   "heldRightReadyAnimation": "heldblockready",
   "heldTpUseAnimation": "twohandplaceblock",
