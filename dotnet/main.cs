@@ -97,12 +97,6 @@ class BlockBirkelandEydeMini : BlockEBase
     private static readonly Dictionary<(Facing, string), Cuboidf[]> SelectionBoxesCache = new();
     private static readonly Dictionary<(Facing, string), Cuboidf[]> CollisionBoxesCache = new();
 
-    //Claude code decided i dont need this
-    /*public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
-    {
-        return base.TryPlaceBlock(world, byPlayer, itemstack, blockSel, ref failureCode);
-    }*/
-
     public override byte[] GetLightHsv(IBlockAccessor blockAccessor, BlockPos pos, ItemStack stack = null)
     {
         //string lightHsvStr = LightHsv[0].ToString() + " " + LightHsv[1].ToString() + " " + LightHsv[2].ToString();
@@ -119,8 +113,6 @@ class BlockBirkelandEydeMini : BlockEBase
         }
     }
 
-
-    //all this crap is really convoluted but it was the only way to make orientations work, and collisions line up in all 4 orientations and still allow the electric connection point to actually work almost 50% of the time and be in the same spot in each orientation
     public override Cuboidf[] GetCollisionBoxes(IBlockAccessor blockAccessor, BlockPos pos) =>
         GetRotatedBoxes(pos, CollisionBoxesCache, CollisionBoxes);
 
@@ -129,6 +121,7 @@ class BlockBirkelandEydeMini : BlockEBase
 
     private Cuboidf[] GetRotatedBoxes_old(BlockPos pos, Dictionary<(Facing, string), Cuboidf[]> cache, Cuboidf[] sourceBoxes)
     {
+        //100% ai generated
         if (!(api?.World?.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { Facing: not Facing.None, Facing: var facing }))
             return Array.Empty<Cuboidf>();
 
@@ -146,20 +139,7 @@ class BlockBirkelandEydeMini : BlockEBase
     }
     private Cuboidf[] GetRotatedBoxes(BlockPos pos, Dictionary<(Facing, string), Cuboidf[]> cache, Cuboidf[] sourceBoxes)
     {
-        /*if (!(api?.World?.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { Facing: not Facing.None, Facing: var facing }))
-            return Array.Empty<Cuboidf>();
-
-        string code = Code.ToString();
-        if (!cache.TryGetValue((facing, code), out Cuboidf[] boxes))
-        {
-            //i don't really know how this works but mirroring whatever electric progressives qol code does wasn't allowing orientations to work correctly.
-            boxes = (Cuboidf[])sourceBoxes.Clone();
-            for (int i = 0; i < boxes.Length; i++)
-                boxes[i] = boxes[i].RotatedCopy(0f, 0f, 180f, RotationOriginVec3d); // same cancellation
-            FacingRotations.ApplyRotations(boxes, facing);
-            cache.TryAdd((facing, code), boxes);
-        }
-        return boxes ?? Array.Empty<Cuboidf>();*/
+        //100% ai generated
         if (!(api?.World?.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { ModelFacing: not Facing.None, ModelFacing: var facing }))
             return Array.Empty<Cuboidf>();
 
@@ -178,7 +158,7 @@ class BlockBirkelandEydeMini : BlockEBase
     private static readonly Vec3f RotationOriginVec3f = new Vec3f(0.5f, 0.5f, 0.5f);
     private static readonly Vec3d RotationOriginVec3d = new Vec3d(0.5, 0.5, 0.5);
 
-    //another "i have no idea what this does" kind of function but it sure did take Claude code a lot of attempts to get it right
+    //yeah
     public override void OnJsonTesselation(ref MeshData sourceMesh, ref int[] lightRgbsByCorner, BlockPos pos, Block[] chunkExtBlocks, int extIndex3d)
     {
         /*base.OnJsonTesselation(ref sourceMesh, ref lightRgbsByCorner, pos, chunkExtBlocks, extIndex3d);
@@ -189,6 +169,7 @@ class BlockBirkelandEydeMini : BlockEBase
             FacingRotations.ApplyRotations(rotated, facing);
             sourceMesh = rotated;
         }*/
+        //the new updated version that is less shit
         base.OnJsonTesselation(ref sourceMesh, ref lightRgbsByCorner, pos, chunkExtBlocks, extIndex3d);
         if (api is ICoreClientAPI && api.World.BlockAccessor.GetBlockEntity(pos) is BlockEntityBirkelandEydeMini { ModelFacing: not Facing.None, ModelFacing: var facing })
         {
@@ -309,7 +290,7 @@ class BlockBirkelandEydeMini : BlockEBase
 
         return false;*/
 
-        //99% working with only 2 bugs DONT LOSE because its the BEST solution EVER FOUND so far
+        //99% working with only 2 bugs
         /*Selection selection = new Selection(blockSelection);
 
         BlockFacing playerFacing = BlockFacing.HorizontalFromAngle(byPlayer.Entity.Pos.Yaw);
@@ -457,7 +438,6 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
 
         //if (api.Side == EnumAppSide.Server)//doesnt prevent the listener from getting registered on the client and it never gets called from the server side. should be renamed to RegisterGameTickListenerClientOnly
         //{
-        //causes lots of errors when the block is deleted. automatically dispose the listener my ass.
         listenerId2 = RegisterDelayedCallback(OnDelayedNetworkRefresh, 1000);
         listenerId = RegisterGameTickListener(OnGameTick, 1500);
         //}
@@ -467,6 +447,7 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
         //a workaround that will hopefully connect the device on load if its in position to be connected and solve that bug
         //if (api.Side == EnumAppSide.Server)
         //{
+        //didnt work, sometimes makes it worse
         //}
 
         mostRecentHoursTillFull = 6;
@@ -637,7 +618,6 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
         receivedAmps = tree.GetFloat("receivedAmps");
         mostRecentHoursTillFull = tree.GetFloat("mostRecentHoursTillFull");
         mostRecentLitersPerHour = tree.GetFloat("mostRecentLitersPerHour");
-        //Api?.Logger.Notification("[BirklandEyde] FromTreeAttributes side=" + Api?.Side + " receivedPower=" + receivedPower);//actually prints the corect number on client side, WTF? THEN WHY DOES IT NOT WORK IN BLOCK NFO
 
         try
         {
@@ -727,7 +707,7 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
         Api?.Logger.Notification("[BirklandEyde] forced reconnect cycle after load");
     }
 
-    //patch yet ANOTHER "electrical network not connecting in specific situation" bug
+    //sometimes this fixes "electrical network not connecting in specific situation" bugs
     public void ScheduleNetworkRefresh(int delayMs = 1000)
     {
         //if (Api?.Side != EnumAppSide.Server) return;
@@ -745,24 +725,17 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
     private void OnGameTick(float dt)
     {
         //stolen from here: https://github.com/anegostudios/vssurvivalmod/blob/849fa8cad9e392368566efc7474e73db6404a145/BlockEntity/BlockEntityFastForwardGrowth.cs
-        //how in the god damn actual fucking shit does this work..?
         double hoursSinceLastUpdate = Api.World.Calendar.TotalHours - totalHoursLastUpdate;
-        //if (hoursSinceLastUpdate < 0)
-        //{
-               // We need to rollback time when the blockEntity saved date is ahead of the calendar date: can happen if a schematic is imported
-        //        onRollback(-hoursSinceLastUpdate);
-        //        totalHoursLastUpdate = Api.World.Calendar.TotalHours;
-        //}
         if (hoursSinceLastUpdate > 0.1)
         {
             //if player was away for 6 or more minutes, do additional stuff
-            Api?.Logger.Notification("[BirklandEyde] chunk was unloaded, NEED to advance OnGameTick by an amount but this feature hasn't been programmed yet. totalHoursLastUpdate=" + totalHoursLastUpdate + " Api.World.Calendar.TotalHours=" + Api.World.Calendar.TotalHours.ToString());
+            Api?.Logger.Notification("[BirklandEyde] chunk was unloaded, need to advance OnGameTick by an amount. totalHoursLastUpdate=" + totalHoursLastUpdate + " Api.World.Calendar.TotalHours=" + Api.World.Calendar.TotalHours.ToString());
 
             //do stuff
             double numHrs = Api.World.Calendar.TotalHours - totalHoursLastUpdate;
             advanceProductionByAmount(numHrs);
 
-            //force it to reconnect to fix yet another useless disconnect bug. god, i fucking hate how picky electric progressives is.
+            //force it to reconnect to try to fix yet another electric network disconnect bug
             //ScheduleNetworkRefresh(2000);
         }
 
@@ -780,18 +753,6 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
                 lastUpdateMs = nowMs;
 
                 var be = GetBehavior<BEBehaviorBirkelandEydeMini>();
-                /*EParams[] allParams = ElectricalProgressive.AllEparams;
-                BlockFacing face = ElectricalProgressive.AllEparams != null ? FacingHelper.Faces(ElectricalProgressive.Connection).FirstOrDefault() : null;
-
-                //this doesnt work at all because voltage and current always comes back as 0 no matter what.
-                if (allParams != null && face != null && face.Index < allParams.Length && allParams[face.Index] != null)
-                {
-                    EParams myParams = allParams[face.Index];
-                    float primaryVoltage = myParams.voltage;
-                    float primaryCurrent = myParams.current;
-                    receivedPower = primaryVoltage * primaryCurrent;
-                    Api.Logger.Notification("[BirklandEyde] rp=" + receivedPower.ToString());
-                }*/
 
                 string s = Api.Side.ToString();
                 //Api.Logger.Notification("[BirklandEyde]" + s + " doing actual tick. dtSeconds= " + dtSeconds.ToString() + " receivedPower=" + be.receivedPower.ToString() + " be.WaterLitres=" + WaterLitres.ToString());
@@ -907,7 +868,7 @@ public class BlockEntityBirkelandEydeMini : BlockEntityEFacingBase
         }
     }
 
-    // Cache the FieldInfo so reflection isn't doing a string lookup every time this function runs
+    // Cache the FieldInfo so reflection isn't doing a string lookup every time this function runs (not used for anything, was an attempt at doing something related to reflection, it didn't work)
     private static readonly FieldInfo MaxDynLightsField = typeof(ClientMain).GetField(
         "maxDynLights",
         BindingFlags.NonPublic | BindingFlags.Instance
@@ -1239,24 +1200,18 @@ public class BEBehaviorBirkelandEydeMini : BlockEntityBehavior, IElectricConsume
 
     public float Consume_request()
     {
-        //not sure if this is watts or amps. treating it as watts for now
-        //Api?.Logger.Notification("[BirklandEyde] returning Consume_request = 100f");
-        //return MaxConsumptionWatts;//maybe for some reason MaxConsumptionWatts initialization isn't respected for some reason
         return 100f;
     }
 
     public void Consume_receive(float amount)
     {
-        //amount is ALWAYS 0 so this doesn't work correctly. I can't find where in the electrical progressive mod suite source code this ever gets called. The source code is incredibly complicated just like everything else in this game's source code
-        //Api?.Logger.Notification("[BirklandEyde] Consume_receive called, amount=" + amount);
-        //receivedPower = amount;
         GetInfoFromServer(amount);
-        Blockentity.MarkDirty(true);   //maybe mark dirty forces a sync which will magically fix the consume recieve bug. edit: nope, didn't make a difference
+        Blockentity.MarkDirty(true);   //maybe mark dirty forces a sync which will magically fix the consume recieve bug. edit: nope, didn't make a difference eit again: wait maybe it helps sometimes. edit again: actuall i dont know anymore
     }
 
     public float getPowerReceive()
     {
-        //return a placeholder value just to get it to compile
+        //return a placeholder value because im not sure what this does anyway
         return receivedPower;
     }
 
@@ -1268,45 +1223,7 @@ public class BEBehaviorBirkelandEydeMini : BlockEntityBehavior, IElectricConsume
 
     public void Update()
     {
-        /*
-        Api.Logger.Notification("[BirklandEyde] update");
-        if (Api == null || Blockentity is not BlockEntityBirkelandEydeMini be) return;
-
-        long nowMs = Api.World.ElapsedMilliseconds;
-        float dtSeconds = (nowMs - lastUpdateMs) / 1000f;
-        lastUpdateMs = nowMs;
-
-        //var electricProgressive = Blockentity.GetBehavior<BEBehaviorElectricalProgressive>();
-        EParams[] allParams = be.ElectricalProgressive.AllEparams;
-        BlockFacing face = be.ElectricalProgressive.AllEparams != null ? FacingHelper.Faces(be.ElectricalProgressive.Connection).FirstOrDefault() : null;
-
-        //this doesnt work at all because voltage and crrent always comes back as 0 no matter what. this function only ever gets called on the client side
-
-        if (allParams != null && face != null && face.Index < allParams.Length && allParams[face.Index] != null)
-        {
-            EParams myParams = allParams[face.Index];
-            float primaryVoltage = myParams.voltage;
-            float primaryCurrent = myParams.current;
-            receivedPower = primaryVoltage * primaryCurrent;
-            Api.Logger.Notification("[BirklandEyde] rp=" + receivedPower.ToString());
-        }
-        
-        Api.Logger.Notification("[BirklandEyde] doing actual tick. dtSeconds= " + dtSeconds.ToString() + " receivedPower=" + receivedPower.ToString() + " be.WaterLitres=" + be.WaterLitres.ToString());
-
-        //if you disable all the checks that cause it to abort, ConsumeWaterProduceAcid still can't actually modify anything
-        if (dtSeconds <= 0 || receivedPower <= 0 || be.WaterLitres <= 0) return;
-
-
-        float powerFraction = GameMath.Clamp(receivedPower / MaxConsumptionWatts, 0f, 1f);
-        float litresPerSecondAtFull = FullProductionLitresPerHour / 3600f;
-        float litresThisTick = System.Math.Min(litresPerSecondAtFull * powerFraction * dtSeconds, be.WaterLitres);
-
-        Api.Logger.Notification("[BirklandEyde] running ConsumeWaterProduceAcid powerFraction=" + powerFraction.ToString() + " litresPerSecondAtFull=" + litresPerSecondAtFull.ToString() + " litresThisTick=" + litresThisTick.ToString());
-        be.ConsumeWaterProduceAcid(litresThisTick);
-        */
-
-        //im pretty sure the intended usage of this is to swap out burned, activated and deactivated versions of the mesh on the client side and the only acceptable way of getting that data is to get it from: BlockEntityBirkelandEydeMini BlockEntity
-        //doesn't do anything
+        //im pretty sure the intended usage of this is to swap out burned, activated and deactivated versions of the mesh on the client side based on data from: BlockEntityBirkelandEydeMini BlockEntity
 
         if (Blockentity is BlockEntityBirkelandEydeMini be)
         {

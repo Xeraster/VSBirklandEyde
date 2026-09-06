@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/BirkelandEyde.csproj": {}
+    "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/BirkelandEyde.csproj": {}
   },
   "projects": {
-    "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/BirkelandEyde.csproj": {
+    "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/BirkelandEyde.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/BirkelandEyde.csproj",
+        "projectUniqueName": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/BirkelandEyde.csproj",
         "projectName": "BirkelandEyde",
-        "projectPath": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/BirkelandEyde.csproj",
+        "projectPath": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/BirkelandEyde.csproj",
         "packagesPath": "/home/scott/.nuget/packages/",
-        "outputPath": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/src/obj/",
+        "outputPath": "/mnt/7f31992f-39a9-42f6-a84a-c278d76071e2/Games/vintagestory/Mods/birkeland-eyde/dotnet/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/scott/.nuget/NuGet/NuGet.Config"

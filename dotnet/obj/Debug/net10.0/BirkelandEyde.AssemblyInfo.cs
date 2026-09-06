@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BirkelandEyde")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c3e43938354e665c7e064a6e2aa48b71514200b")]
 [assembly: System.Reflection.AssemblyProductAttribute("BirkelandEyde")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BirkelandEyde")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
